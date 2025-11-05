@@ -2,10 +2,9 @@ const seedrandom = require('seedrandom');
 const fs = require('fs');
 const header = require('./header.js')
 
-const rounds = 100;
+const rounds = 1000;
 const bet = 1;
-var played = true;
-seedrandom('69', { global: true });
+seedrandom('abc', { global: true });
 
 /*
 
@@ -32,6 +31,8 @@ console.log(blackjackSimulation(d, bet));
 */
 
 let totalResults = 0;
+let totalRunningResults = [];
+let totalRunningResultsPerGame = [];
 let results = [];
 let resultsPerGame = [];
 let resultsDictionary = {"wins":0, "losses":0, "draws":0};
@@ -45,29 +46,35 @@ while(numberOfRounds<rounds) {
     const shoe = Math.floor(Math.random()*27)+45;
     runningCount.value = 0;
     var gameResult = [];
+    var gameRunningResult = 0;
+    var gameRunningResults = [];
     while(d.cards.length>shoe) {
         const count = runningCount.value;
         const result = header.blackjackSimulation(d, bet, runningCount);
-        if(played) {
-            results.push(result);
-            overallRunningCount.push(count);
-            totalResults += result;
-            if(result>0) {resultsDictionary["wins"] += 1;}
-            else if(result<0) {resultsDictionary["losses"] += 1;}
-            else if(result==0) {resultsDictionary["draws"] += 1;}
-            numberOfRounds+=1;
-            gameResult.push(result);
-        }
+        results.push(result);
+        overallRunningCount.push(count);
+        totalResults += result;
+        totalRunningResults.push(totalResults);
+        gameRunningResult += result;
+        gameRunningResults.push(gameRunningResult);
+        if(result>0) {resultsDictionary["wins"] += 1;}
+        else if(result<0) {resultsDictionary["losses"] += 1;}
+        else if(result==0) {resultsDictionary["draws"] += 1;}
+        numberOfRounds+=1;
+        gameResult.push(result);
         if(numberOfRounds==rounds) {break;}
     }
     resultsPerGame.push(gameResult);
+    totalRunningResultsPerGame.push(gameRunningResults);
 }
 
 const finalData = {
     "totalResults": totalResults,
     "numberOfRounds": numberOfRounds,
     "resultsDictionary": resultsDictionary,
+    "totalRunningResults": totalRunningResults,
     "results": results,
+    "totalRunningResultsPerGame": totalRunningResultsPerGame,
     "resultsPerGame": resultsPerGame,
     "overallRunningCount": overallRunningCount
 };

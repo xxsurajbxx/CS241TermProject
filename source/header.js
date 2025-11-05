@@ -220,13 +220,13 @@ function evaluateReturn(pHandVal, dHandVal, doubled=false) {
     if(doubled) {multiplier=2;}
     if(pHandVal>21) {return -1*multiplier;}
     if(dHandVal>21) {
-        if(pHandVal==21) {
+        if(pHandVal==21 && pHandVal.length==2) {
             return 1.5*multiplier;
         }
         return 1*multiplier;
     }
     if(pHandVal>dHandVal) {
-        if(pHandVal==21) {return 1.5*multiplier;}
+        if(pHandVal==21 && pHandVal.length==2) {return 1.5*multiplier;}
         return 1*multiplier;
     }
     if(pHandVal==dHandVal) {return 0*multiplier;}
