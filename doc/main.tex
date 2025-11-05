@@ -1,0 +1,93 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{url}
+
+\title{Blackjack Strategy Analysis}
+\author{Suraj Bhardwaj}
+\date{May 2024}
+
+\begin{document}
+
+\maketitle
+\pagebreak
+\section{Background}
+the game of blackjack can be boiled down into a very simple set of rules. The goal of the player is to have highest value hand on the table without its value exceeding 21. Each card in blackjack is assigned a certain value. The value of all numbered cards is the value of the number itself and any face card holds a value of 10. The ace holds a value of either 1 or 11 depending on what forms a stronger hand. In any hand, if there is an ace whose value is set to 11 (making the strongest hand) then that hand is referred to by its value and “soft” (example: soft 15 consists of an ace and a 4). Any hand which does not include an ace or where all aces have a value of 1 are referred to as “hard”. The game starts with a dealer who deals out 2 card hands to all players including himself. All cards except for one of the dealer’s cards are facing up, viewable by all players. The dealer then iterates through all participants letting them play out their turns to completion before playing his own turn. Each player has only a few moves available to them. The first option is to "stand". If one stands, they are deciding that they would like to end their turn, after which, the next player then participates. The next option is to "hit". To hit means to receive an additional card from the dealer. The dealer will then deal out another card to the player and the player can continue their turn. The next option that a player can take advantage of, is to "double down" or "double". To double means to receive an additional card and double one’s betting amount (and thus their potential returns) simultaneously. The final option is to "split", the player has the option to split only at the beginning of the game, immediately after being dealt their initial 2 card hand considering that they have 2 of the same cards (same value and/or face). To split means to divide that 2-card hand into 2 separate 2 card hands. The original two cards are split, and each new hand is dealt another card. The original bet placed also then divides amongst the two hands. This means if one loses and one wins, the player doesn't win or lose any money. After the dealer has dealt out all the hands but before the players have played out their turns, the dealer checks their upside-down card to check whether he is holding a blackjack. If he is holding a blackjack (hand that equals 21 in value) with his 2-card hand, all players lose unless they too are holding a blackjack with their initial 2 card hands. After the players have played out their turns, the dealer sweeps away all the bets from the players whose hands exceed 21. After all that, the dealer then flips his second card over and plays out his turn. The dealer in blackjack plays under certain constraints. Each casino has their own rules for how the dealer must play however the most popular and common way is that the dealer hits until their hand’s value exceeds 17 (counting any ace’s as 1). The dealer does not have the option to double (because they are not betting anything) or split. Each player, when playing must bet at least a certain amount or higher to be dealt in. When the player wins the dealer returns them twice their initial bet (100% return).
+
+\section{Simulation Details}
+For the simulation that I coded up, certain decisions had to be made. Firstly, the dealer will stand on a soft 17 and hit on anything 16 and below. Additionally, the player is not given the option to double after they have split their hand. To add on, at some casinos offer the option to “surrender” where the player would be able to take back half their bet before any player plays out their turn after the dealer deals out everyone’s cards. This option is not offered at all casinos and is not implemented in my simulation of the game. Lastly, the player is presented with the option to take “insurance”, at some casinos, where they make a side bet of a minimum of half their bet on whether the dealer is holding blackjack in the two cards they were initially dealt. This side bet pays out 2:1. This option is also not implemented in my simulation of blackjack.
+
+\section{How Casinos Increase Their Advantage}
+Casinos already hold a significant advantage in blackjack since the dealer playes last so any players that bust automatically lose regardless of whether the dealer busts or not. Additionally, should the dealer deal himself a blackjack, they win immediately without giving the player the opportunity to reach 21. To add on, casinos do not exhaust the entire stock of cards before reshuffling and restarting. Once all the cards have been shuffled, the dealer will place a cut card towards the bottom of the cards separating approximately one deck from the rest. The cards will then be dealt until that card has been hit. Once that card comes out, the current hand will be finished and then all the cards will be shuffled, and the process starts anew. Coupled the cut card, blackjack is often played with either 6 or 8 decks (very few play with 2 or 4 but some do) which varies the composition of the shoe (all cards above the cut card).
+
+\section{Strategies}
+There are 3 strategies of play which are analyzed in this simulation: dealer strategy, basic strategy, and high-low card counting. The dealer strategy was discussed previously. Basic strategy is statistically the best way to play blackjack, considering that the dealing of each card is an independent event, however I could not find any resources with mathematical proof of this claim. Card counting is the best way to play blackjack, considering that the dealing of each card affects the dealing of the next one. High-Low card counting is the most widely used method of counting cards. High-Low card counting splits all the cards up into 3 categories, high, low, and medium. The cards, 2, 3, 4, 5, 6 are low cards. 7, 8, 9 are medium cards. And 10, Jack, Queen, King, and Ace are all high cards. As the game is played and cards are dealt, a running count of the cards is kept. When a low card comes out, 1 is added to the count. When a high card is dealt, 1 is taken from the count. When a medium card comes out, nothing is added or subtracted from the count.
+
+
+Research into the best strategy in blackjack has led us to basic strategy and established the principles of card counting. There are some other strategies however they will not be discussed in this paper.
+
+The idea behind high-low card counting is that when there are more higher cards in the deck, waiting to come out, the player holds an advantage because they are allowed to stand on any number whereas the dealer can only stand over 16. For example, if we know that the probability of a 10 coming out of the deck is high, and the value of our hand is over 11. It would be strategic to stand because if a ten were to come out, we would bust. As such, the player would choose their move according to the count such that they use the probabilities to their advantage. According to prior research, in an 8-deck game (the one simulated), this does not give the player much of an advantage ($<$1\%), especially if the cut card is placed high in the shoe (the deck).
+
+\section{Research}
+The program I have made simulates 100 hands of blackjack with each of the 3 strategies discussed above. It measures the output considering a bet of 1 unit and adds up the number of wins, losses, and draws. Additionally, it keeps a log of the result of each individual hand as well as the running count before each hand. Another program then visualizes the data into graphs which are provided with this report. Prior research points to the fact that basic strategy Is the optimal method without counting cards while counting cards is the optimal strategy overall. While these claims logically make sense, I could not find any resources that have any sort of math to prove these claims. 
+
+\section{Results}
+The outputs of my programs substantiate these claims. Primarily, the win percentages in descending order are 47, 44, 37. These percentages correspond to the card counting strategy, basic strategy, and dealer strategy in that order. Here the card counting strategy is the best with basic strategy as a close second. Additionally, if we look at the overall returns of each strategy, card counting has a return value of 13.75 betting units, basic strategy has a return value of 7 betting units, and the dealer strategy has a return of -6 betting units. The final and most critical point that proves the claim is when you compare the graph of the running count vs return for basic strategy and card counting. Here you notice that, in the basic strategy graph, the majority of the losses occurred when the running count was negative. Since the card counting strategy does not even play when the count is negative, it greatly increases the chances of winning. Overall, through the metrics gathered in these simulations, it can be proven that card counting is the optimal blackjack strategy due to the player holding an advantage when there are more high cards in the deck.
+
+\begin{figure}
+    \includegraphics[width=5.5in]{HighLow1.png}
+    \caption{High Low Card Counting Simulation Output}
+    \label{fig:HighLow1}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=5in]{HighLow2.png}
+    \caption{High Low Card Counting Simulation Graphs}
+    \label{fig:HighLow2}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=5.5in]{BasicStrategy1.png}
+    \caption{Basic Strategy Simulation Output}
+    \label{fig:BasicStrategy1}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=5in]{BasicStrategy2.png}
+    \caption{Basic Strategy Simulation Graphs}
+    \label{fig:BasicStrategy2}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=5.5in]{DealerStrategy1.png}
+    \caption{Dealer Strategy Simulation Output}
+    \label{fig:DealerStrategy1}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=5in]{DealerStrategy2.png}
+    \caption{Dealer Strategy Simulation Graphs}
+    \label{fig:DealerStrategy2}
+\end{figure}
+
+\section{Further Implementations}
+This project/research adequately proves the claim that card counting is the optimal strategy in blackjack through metrics gathered from simulated games. This proof works in practice because it establishes that the claim will hold true in real life rather than from a purely theoretical perspective. That said, further research can be performed on the topic through the analysis of the topic through a more statistical lens. For further supplementation of this research, this analysis can be performed through the implementation of an individual card counting simulator which would count each card individually to perfectly nail down the probability of busting on a given decision (move, turn) and make decisions accordingly. Overall, this research still has much more to explore.
+
+\pagebreak
+\section{Works Cited}
+
+\begin{enumerate}
+\item Blackjack Apprenticeship. “How to Play (and Win) at Blackjack: The Expert’s Guide.” YouTube, YouTube, 13 Nov. 2018, \url{www.youtube.com/watch?v=PljDuynF-j0}.
+
+\item “How to Play Blackjack.” The Venetian Resort Las Vegas, \url{www.venetianlasvegas.com/casino/table-games/how-to-play-blackjack.html#:~:text=In%20Blackjack%2C%20everyone%20plays%20against,and%20the%20wager%20is%20lost}. Accessed 10 May 2024.
+
+\item Shackleford, Michael. “Blackjack Basic Strategy.” Wizard of Odds, Wizard of Odds, 5 Oct. 2023, \url{wizardofodds.com/games/blackjack/strategy/calculator/}.
+
+\item Shackleford, Michael. “Card Counting.” Wizard Of Odds > Guide to Gambling Games \& Online Casinos, Wizard of Odds, 21 Jan. 2019, \url{wizardofodds.com/games/blackjack/card-counting/introduction/}.
+
+\item Shackleford, Michael. “Introduction to the High-Low Card Counting Strategy.” Wizard of Odds, Wizard of Odds, 27 Nov. 2023, \url{wizardofodds.com/games/blackjack/card-counting/high-low/}.
+
+\item Younas, Aneeca. “Blackjack Odds Explained - House Edge and Payout.” Techopedia, \url{www.techopedia.com/gambling-guides/blackjack-odds-probability}. Accessed 11 May 2024.
+
+\end{enumerate}
+\end{document}
