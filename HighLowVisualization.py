@@ -6,6 +6,8 @@ with open('HighLowCardCountingData.json', 'r') as file:
     data = json.load(file)
     resultsDictionary = data['resultsDictionary']
     results = data['results']
+    totalRunningResults = data['totalRunningResults']
+    totalRunningResultsPerGame = data['totalRunningResultsPerGame']
     overallRunningCount = data['overallRunningCount']
     numberOfRounds = data['numberOfRounds']
     totalResults = data['totalResults']
@@ -21,7 +23,7 @@ with open('HighLowCardCountingData.json', 'r') as file:
 
     #"resultsPerGame": resultsPerGame, still need to do something with this
 
-
+    """
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8), sharey=True)
     ax1.plot(np.arange(len(results)), results)
     ax1.set_xlabel('Time')
@@ -31,6 +33,26 @@ with open('HighLowCardCountingData.json', 'r') as file:
     ax2.set_xlabel('Count')
     ax2.set_ylabel('Results')
     ax2.set_title('Results vs Count')
+    """
+    groupings = 100
+    xAxis = range(groupings)
+    trr = [0] + totalRunningResults
+    yAxis = []
+    prevResult=0
+    avgLine = [0 for i in range(groupings)]
+    for i in range(len(trr)):
+        if i%groupings==0 and len(yAxis)==groupings:
+            plt.plot(xAxis, yAxis, color='blue')
+            prevResult=trr[i]
+            yAxis=[]
+        yAxis.append(trr[i]-prevResult)
+        avgLine[(i%groupings)] += trr[i]-prevResult
+        #if i>=len(trr)-groupings:
+            #print(avgLine[(i%groupings)+1])
+    print(groupings)
+    print(avgLine)
+    plt.plot(xAxis, avgLine, color='red') # this is supposed to visualize the average return per hand per grouping
+    plt.xlim(0, groupings)
 
-plt.subplots_adjust(hspace=0.5)
+# plt.subplots_adjust(hspace=0.5)
 plt.show()
