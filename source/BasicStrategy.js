@@ -2,7 +2,7 @@ const seedrandom = require('seedrandom');
 const fs = require('fs');
 const header = require('./header.js')
 
-const rounds = 100000;
+const rounds = 1000;
 const bet = 1;
 seedrandom('abc', { global: true });
 
