@@ -2,7 +2,7 @@ const seedrandom = require('seedrandom');
 const fs = require('fs');
 const header = require('./header.js')
 
-const rounds = 1000;
+const rounds = 100000;
 const bet = 1;
 seedrandom('abc', { global: true });
 
@@ -43,7 +43,8 @@ var runningCount = new header.counter();
 while(numberOfRounds<rounds) {
     let d = new header.Deck(8);
     d.shuffle();
-    const shoe = Math.floor(Math.random()*27)+45;
+    // const shoe = Math.floor(Math.random()*27)+45;
+    const shoe = 52; //keeping a constant shoe for now. can vary the shoe later
     runningCount.value = 0;
     var gameResult = [];
     var gameRunningResult = 0;
@@ -52,7 +53,7 @@ while(numberOfRounds<rounds) {
         const count = runningCount.value;
         const result = header.blackjackSimulation(d, bet, runningCount);
         results.push(result);
-        overallRunningCount.push(count);
+        overallRunningCount.push(Math.floor(count/(d.numCards/52)));
         totalResults += result;
         totalRunningResults.push(totalResults);
         gameRunningResult += result;

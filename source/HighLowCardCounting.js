@@ -65,7 +65,8 @@ var runningCount = new header.counter();
 while(numberOfRounds<rounds) {
     let d = new header.Deck(8);
     d.shuffle();
-    const shoe = Math.floor(Math.random()*27)+45;
+    // const shoe = Math.floor(Math.random()*27)+45;
+    const shoe = 52; //keeping a constant shoe for now. can vary the shoe later
     runningCount.value = 0;
     var gameResult = [];
     var gameRunningResult = 0;
@@ -75,7 +76,7 @@ while(numberOfRounds<rounds) {
         const result = header.blackjackSimulation(d, bet, runningCount, trueCountThreshold);
         if(result==null) {continue;}
         results.push(result);
-        overallRunningCount.push(count);
+        overallRunningCount.push(Math.floor(count/(d.numCards/52)));
         totalResults += result;
         totalRunningResults.push(totalResults);
         gameRunningResult += result;
