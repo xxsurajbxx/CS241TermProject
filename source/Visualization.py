@@ -53,7 +53,7 @@ else:
 
         avgReturnVsCount = {}
         plt.figure(2)
-        groupings = 100
+        groupings = 500
         xAxis = range(groupings+1)
         groupedResults = []
         yAxis = [0]
@@ -75,12 +75,27 @@ else:
                 yAxis=[0]
             yAxis.append(totalRunningResults[i]-prevResult)
             avgLine[(i%groupings)+1] += totalRunningResults[i]-prevResult
-        #plt.plot(xAxis, avgLine, color='red') # this is supposed to visualize the average return per hand per grouping
+            if i>=numberOfRounds-groupings:
+                avgLine[(i%groupings)+1]/=(numberOfRounds/groupings)
+        plt.plot(xAxis, avgLine, color='red') # this is supposed to visualize the average return per hand per grouping
         plt.xlim(0, groupings)
         
         plt.figure(2)
-        npAvgReturnVsCount = np.array(list(avgReturnVsCount.values()))
-        plt.plot(avgReturnVsCount.keys(), npAvgReturnVsCount[:, 0]/npAvgReturnVsCount[:, 1])
+        xAxis = np.array(list(avgReturnVsCount.keys()))
+        sortedIndexes = np.argsort(xAxis)
+        xAxis = xAxis[sortedIndexes]
+        yAxis = np.array(list(avgReturnVsCount.values()))
+        yAxis = yAxis[sortedIndexes]
+        boolMask = yAxis[:, 1] >= 50 # here i filter by the number of occurances of each count (to remove outliers)
+        xAxis = xAxis[boolMask]
+        yAxis = yAxis[boolMask]
+        yAxis = yAxis[:, 0]/yAxis[:, 1]
+        plt.plot(xAxis, yAxis)
+        regressionCoefficients = np.polyfit(xAxis, yAxis, 1)
+        r_squared = np.corrcoef(xAxis, yAxis)[0, 1]**2
+        regressionFunction = np.poly1d(regressionCoefficients)
+        plt.plot(np.linspace(min(xAxis), max(xAxis), 100), regressionFunction(np.linspace(min(xAxis), max(xAxis), 100)))
+        print(f'r^2: {r_squared}')
         
     #plt.yscale('log')
     plt.show()
