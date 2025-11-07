@@ -21,10 +21,6 @@ for now the shoe is kept in a constant spot however this can be changed to have 
 todo for now:
     fix the split logic (there are a lot of weird rules relating to splitting)
         blackjack payout should be 1
-        4 splits are allowed
         forced stand on split aces
-
-    check basic strategy logic
-        make sure that it makes sense
 
     running out of memory when processing very large numbers of hands. figure out how to use batch processing or stream processing to be able to handle the large volumes of data. This is not as necessary as it only happens for simulations of over 1,000,000 hands (which may be overkill)
