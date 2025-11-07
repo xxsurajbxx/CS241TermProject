@@ -191,24 +191,17 @@ function calcValues(hand) {
         }
     }
     total+=numAces;
-    stiffness = 'Hard';
-    if(numAces!=0) {
-        for(let i=1; i<=numAces; i++) {
-            if(total+(10*i)>21) {
-                return [total, stiffness];
-            }
-            else {
-                total += 10*i;
-                stiffness = 'Soft';
-            }
-        }
+    if(numAces==0 || total+10>21) {return [total, 'Hard'];}
+    for(let i=1; i<=numAces; i++) {
+        if(total+10<=21) {total+=10;}
+        else {break;}
     }
-    return [total, stiffness];
+    return [total, 'Soft'];
 }
 
 function dealerStrategy(deck, hand, count=null) {
-    var handVal = calcValues(hand)[0];
-    while(handVal<17) {
+    var handVal = calcValues(hand);
+    while(handVal[0]<17 || handVal[1]=='Soft') {
         hand.push(deck.draw(count));
         handVal = calcValues(hand)[0];
     }
@@ -305,18 +298,16 @@ function basicStrategy(dCard, handVal, stiffness) {
                 case 10:
                     switch(dCard) {
                         case '10':
+                        case 'J':
+                        case 'Q':
+                        case 'K':
                         case 'A':
                             return 'h';
                         default:
                             return 'dh';
                     }
                 case 11:
-                    switch(dCard) {
-                        case 'A':
-                            return 'h';
-                        default:
-                            return 'dh';
-                    }
+                    return 'dh';
                 case 12:
                     switch(dCard) {
                         case '4':
@@ -345,6 +336,8 @@ function basicStrategy(dCard, handVal, stiffness) {
             }
         case 'Soft':
             switch(handVal) {
+                case 12:
+                    return 'h';
                 case 13:
                 case 14:
                     switch(dCard) {
@@ -366,6 +359,7 @@ function basicStrategy(dCard, handVal, stiffness) {
                     }
                 case 17:
                     switch(dCard) {
+                        case '2':
                         case '3':
                         case '4':
                         case '5':
@@ -386,6 +380,13 @@ function basicStrategy(dCard, handVal, stiffness) {
                             return 'h';
                         default:
                             return 'ds';
+                    }
+                case 19:
+                    switch(dCard) {
+                        case '6':
+                            return 'ds';
+                        default:
+                            return 's';
                     }
                 default:
                     return 's';

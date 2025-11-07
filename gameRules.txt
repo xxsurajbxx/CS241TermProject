@@ -1,6 +1,6 @@
 blackjack pays 3:2 (good for player)
 
-dealer stands on all 17's (good for player)
+dealer hits on soft 17 (bad for player but very standard)
 
 you are allowed to double after splitting (good for player)
 
@@ -12,13 +12,16 @@ American style peek (dealer checks for blackjack before letting players play)
 
 you are not given the option to surrender (bad for player)
 
+Aces can be split as many times as you want (a bit unconventional but gives player an advantage)
+
+Basic Strategy is based on wizard of odds 8 deck basic strategy chart
+
 for now the shoe is kept in a constant spot however this can be changed to have a randomized shoe (more realistic casino conditions)
 
 todo for now:
     fix the split logic (there are a lot of weird rules relating to splitting)
         blackjack payout should be 1
         4 splits are allowed
-        aces are allowed to be split once
         forced stand on split aces
 
     check basic strategy logic
