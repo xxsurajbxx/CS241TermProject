@@ -209,33 +209,35 @@ function dealerStrategy(deck, hand, count=null) {
 }
 
 function evaluateReturn(pHandVal, dHandVal, doubled=false) {
+    console.log('Player hand value: ' + pHandVal);
+    console.log('Dealer hand value: ' + dHandVal);
     var multiplier = 1;
     if(doubled) {multiplier=2;}
     if(pHandVal>21) {
-        //console.log('Player Busted');
+        console.log('Player Busted');
         return -1*multiplier;
     }
     if(dHandVal>21) {
-        //console.log('Dealer Busted');
+        console.log('Dealer Busted');
         if(pHandVal==21 && pHandVal.length==2) {
-            //console.log('Player Blackjack');
+            console.log('Player Blackjack');
             return 1.5*multiplier;
         }
         return 1*multiplier;
     }
     if(pHandVal>dHandVal) {
-        //console.log('Player beat dealer');
+        console.log('Player beat dealer');
         if(pHandVal==21 && pHandVal.length==2) {
-            //console.log('Player Blackjack');
+            console.log('Player Blackjack');
             return 1.5*multiplier;
         }
         return 1*multiplier;
     }
     if(pHandVal==dHandVal) {
-        //console.log('Push');
+        console.log('Push');
         return 0;
     }
-    //console.log('Dealer beat Player');
+    console.log('Dealer beat Player');
     return -1*multiplier;
 }
 
@@ -527,7 +529,7 @@ function blackjackSimulation(deck, betAmount, count, countThreshold=-500) {
     var totalReturn = 0;
     for(let i=0; i<handVals.length; i++) {
         //console.log('player hand: ' + handVals[i]);
-        var ret = evaluateReturn(handVals[i][0], dHandVal[0], handVals[i][1])*betAmount;
+        var ret = evaluateReturn(handVals[i][0], dHandVal, handVals[i][1])*betAmount;
         //console.log('return: ' + ret);
         totalReturn += ret;
     }
