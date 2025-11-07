@@ -247,7 +247,7 @@ class counter {
 
 function runBasicStrategy(deck, hand, dealerCard, count) {
     var handVal = calcValues(hand);
-    var decision;
+    var decision=null;
     while(handVal[0]<21 && decision!='s') {
         //console.log(hand);
         //console.log('value: ' + handVal[0] + ' stiffness: ' + handVal[1]);
@@ -376,7 +376,6 @@ function basicStrategy(dCard, handVal, stiffness) {
                     }
                 case 17:
                     switch(dCard) {
-                        case '2':
                         case '3':
                         case '4':
                         case '5':
@@ -387,7 +386,6 @@ function basicStrategy(dCard, handVal, stiffness) {
                     }
                 case 18:
                     switch(dCard) {
-                        case '2':
                         case '7':
                         case '8':
                             return 's';
