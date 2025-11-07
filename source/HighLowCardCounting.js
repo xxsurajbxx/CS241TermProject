@@ -2,7 +2,7 @@ const seedrandom = require('seedrandom');
 const fs = require('fs');
 const header = require('./header.js')
 
-const rounds = 10000;
+const rounds = 1000000;
 const bet = 1;
 seedrandom('abc', { global: true });
 // we only play when the true count is at or above this threshold otherwise we let the dealer simulate hands by himself

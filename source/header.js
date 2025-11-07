@@ -239,7 +239,7 @@ class counter {
     }
 }
 
-function runBasicStrategy(deck, hand, dealerCard, canDouble, count) {
+function runBasicStrategy(deck, hand, dealerCard, count) {
     var handVal = calcValues(hand);
     var decision;
     while(handVal[0]<21 && decision!='s') {
@@ -251,21 +251,21 @@ function runBasicStrategy(deck, hand, dealerCard, canDouble, count) {
                 //console.log('hit');
                 hand.push(deck.draw(count));
                 //console.log(hand);
-                canDouble = false;
                 break;
             case 'dh':
                 //console.log('hit');
-                hand.push(deck.draw(count));
-                if(canDouble) {
+                if(hand.length==2) {
+                    hand.push(deck.draw(count));
                     //console.log('double');
                     handVal = calcValues(hand);
                     //console.log(hand);
                     return [handVal[0], true];
                 }
+                hand.push(deck.draw(count));
                 break;
 
             case 'ds':
-                if(canDouble) {
+                if(hand.length==2) {
                     //console.log('double');
                     hand.push(deck.draw(count));
                     handVal = calcValues(hand);
@@ -401,6 +401,51 @@ function evaluateSplitReturn(hand1, h1Doubled, hand2, h2Doubled, dHandVal) {
 
 function shouldSplit(pCard, dCard) {
     switch(pCard) {
+        case '8':
+        case 'A':
+            return true;
+        case '5':
+        case '10':
+        case 'J':
+        case 'Q':
+        case 'K':
+            return false;
+        case '9':
+            switch(dCard) {
+                case '7':
+                case '10':
+                case 'J':
+                case 'Q':
+                case 'K':
+                case 'A':
+                    return false
+                default:
+                    return true;
+            }
+        case '7':
+            switch(dCard) {
+                case '8':
+                case '9':
+                case '10':
+                case 'J':
+                case 'Q':
+                case 'K':
+                case 'A':
+                    return false;
+                default:
+                    return true;
+            }
+        case '6':
+            switch(dCard) {
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                    return true;
+                default:
+                    return false;
+            }
         case '4':
             switch(dCard) {
                 case '5':
@@ -409,43 +454,19 @@ function shouldSplit(pCard, dCard) {
                 default:
                     return false;
             }
-        case '6':
-            switch(dCard) {
-                case '7':
-                case '8':
-                case '9':
-                case '10':
-                case 'A':
-                    return false;
-                default:
-                    return true;
-            }
-        case '2':
         case '3':
-        case '7':
+        case '2':
             switch(dCard) {
-                case '8':
-                case '9':
-                case '10':
-                case 'A':
-                    return false;
-                default:
-                    return true;
-            }
-        case '8':
-        case 'A':
-            return true;
-        case '9':
-            switch(dCard) {
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
                 case '7':
-                case '10':
-                case 'A':
-                    return false;
-                default:
                     return true;
+                default:
+                    return false;
             }
-        case 'A':
-            return true;
     }
 }
 

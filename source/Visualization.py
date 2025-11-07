@@ -60,6 +60,7 @@ else:
         prevResult=0
         avgLine = [0 for i in range(groupings+1)]
         plt.figure(1)
+        stdDevPerCount = {}
         for i in range(len(totalRunningResults)):
             if overallRunningCount[i] in avgReturnVsCount:
                 avgReturnVsCount[overallRunningCount[i]][0] += results[i]
@@ -68,6 +69,12 @@ else:
                 avgReturnVsCount[overallRunningCount[i]] = []
                 avgReturnVsCount[overallRunningCount[i]].append(results[i])
                 avgReturnVsCount[overallRunningCount[i]].append(1)
+            
+            if overallRunningCount[i] in stdDevPerCount:
+                stdDevPerCount[overallRunningCount[i]] += results[i]**2
+            else:
+                stdDevPerCount[overallRunningCount[i]] = results[i]**2
+            
             if i%groupings==0 and len(yAxis)==groupings+1:
                 groupedResults.append(yAxis)
                 plt.plot(xAxis, yAxis, color='blue')
@@ -82,19 +89,27 @@ else:
         
         plt.figure(2)
         xAxis = np.array(list(avgReturnVsCount.keys()))
+        yAxis = np.array(list(avgReturnVsCount.values()))
+        stdDevPerCount = np.array(list(stdDevPerCount.values()))
         sortedIndexes = np.argsort(xAxis)
         xAxis = xAxis[sortedIndexes]
-        yAxis = np.array(list(avgReturnVsCount.values()))
         yAxis = yAxis[sortedIndexes]
-        boolMask = yAxis[:, 1] >= 50 # here i filter by the number of occurances of each count (to remove outliers)
+        stdDevPerCount = stdDevPerCount[sortedIndexes]
+        stdDevPerCount = np.sqrt((stdDevPerCount/yAxis[:, 1])- ((yAxis[:, 0]/yAxis[:, 1])**2))
+        standardErrorPerCount = stdDevPerCount / np.sqrt(yAxis[:, 1])
+        boolMask = yAxis[:, 1] >= 1000 # here i filter by the number of occurances of each count (to remove outliers)
         xAxis = xAxis[boolMask]
         yAxis = yAxis[boolMask]
+        stdDevPerCount = stdDevPerCount[boolMask]
+        standardErrorPerCount = standardErrorPerCount[boolMask]
         yAxis = yAxis[:, 0]/yAxis[:, 1]
         plt.plot(xAxis, yAxis)
         regressionCoefficients = np.polyfit(xAxis, yAxis, 1)
         r_squared = np.corrcoef(xAxis, yAxis)[0, 1]**2
         regressionFunction = np.poly1d(regressionCoefficients)
         plt.plot(np.linspace(min(xAxis), max(xAxis), 100), regressionFunction(np.linspace(min(xAxis), max(xAxis), 100)))
+        plt.errorbar(xAxis, yAxis, yerr=standardErrorPerCount, fmt='-o')
+        plt.ylim(-0.25, 0.25)
         print(f'r^2: {r_squared}')
         
     #plt.yscale('log')
