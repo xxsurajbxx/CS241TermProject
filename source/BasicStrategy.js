@@ -4,7 +4,7 @@ const header = require('./header.js')
 
 const rounds = 1000000;
 const bet = 1;
-seedrandom('abc', { global: true });
+seedrandom('abcd', { global: true });
 
 /*
 
@@ -50,10 +50,10 @@ while(numberOfRounds<rounds) {
     var gameRunningResult = 0;
     var gameRunningResults = [];
     while(d.cards.length>shoe) {
-        const count = runningCount.value;
+        const count = runningCount.value/(d.numCards/52);
         const result = header.blackjackSimulation(d, bet, runningCount);
         results.push(result);
-        overallRunningCount.push(Math.floor(count/(d.numCards/52)));
+        overallRunningCount.push(Math.floor(count));
         totalResults += result;
         totalRunningResults.push(totalResults);
         gameRunningResult += result;

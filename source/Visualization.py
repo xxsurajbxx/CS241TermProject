@@ -18,6 +18,7 @@ else:
         totalResults = data['totalResults']
 
         print(f'Final Results: {totalResults}')
+        print(f'House Edge: {-1*(totalResults/numberOfRounds)}')
         wPercent = (resultsDictionary['wins']/numberOfRounds)*100
         lPercent = (resultsDictionary['losses']/numberOfRounds)*100
         dPercent = (resultsDictionary['draws']/numberOfRounds)*100
@@ -53,7 +54,7 @@ else:
 
         avgReturnVsCount = {}
         plt.figure(2)
-        groupings = 500
+        groupings = 100000
         xAxis = range(groupings+1)
         groupedResults = []
         yAxis = [0]
@@ -97,7 +98,7 @@ else:
         stdDevPerCount = stdDevPerCount[sortedIndexes]
         stdDevPerCount = np.sqrt((stdDevPerCount/yAxis[:, 1])- ((yAxis[:, 0]/yAxis[:, 1])**2))
         standardErrorPerCount = stdDevPerCount / np.sqrt(yAxis[:, 1])
-        boolMask = yAxis[:, 1] >= 1000 # here i filter by the number of occurances of each count (to remove outliers)
+        boolMask = yAxis[:, 1] >= 10000 # here i filter by the number of occurances of each count (to remove outliers)
         xAxis = xAxis[boolMask]
         yAxis = yAxis[boolMask]
         stdDevPerCount = stdDevPerCount[boolMask]
@@ -109,7 +110,8 @@ else:
         regressionFunction = np.poly1d(regressionCoefficients)
         plt.plot(np.linspace(min(xAxis), max(xAxis), 100), regressionFunction(np.linspace(min(xAxis), max(xAxis), 100)))
         plt.errorbar(xAxis, yAxis, yerr=standardErrorPerCount, fmt='-o')
-        plt.ylim(-0.25, 0.25)
+        #plt.ylim(-0.25, 0.25)
+        plt.plot(np.linspace(min(xAxis), max(xAxis), 2), [0, 0])
         print(f'r^2: {r_squared}')
         
     #plt.yscale('log')
