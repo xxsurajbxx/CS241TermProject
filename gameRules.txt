@@ -1,5 +1,7 @@
 blackjack pays 3:2 (good for player)
 
+8 decks
+
 dealer hits on soft 17 (bad for player but very standard)
 
 you are allowed to double after splitting (good for player)
