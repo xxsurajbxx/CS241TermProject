@@ -6,7 +6,7 @@ const rounds = 1000000;
 const bet = 1;
 seedrandom('abc', { global: true });
 // we only play when the true count is at or above this threshold otherwise we let the dealer simulate hands by himself
-const trueCountThreshold=0;
+const trueCountThreshold=1;
 
 
 //this code tests this strategy

@@ -4,7 +4,7 @@ const header = require('./header.js')
 
 const rounds = 1000000;
 const bet = 1;
-seedrandom('abcd', { global: true });
+seedrandom('abc', { global: true });
 
 /*
 
@@ -43,8 +43,7 @@ var runningCount = new header.counter();
 while(numberOfRounds<rounds) {
     let d = new header.Deck(8);
     d.shuffle();
-    // const shoe = Math.floor(Math.random()*27)+45;
-    const shoe = 52; //keeping a constant shoe for now. can vary the shoe later
+    const shoe = Math.floor(Math.random()*27)+45;
     runningCount.value = 0;
     var gameResult = [];
     var gameRunningResult = 0;

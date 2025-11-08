@@ -208,10 +208,10 @@ function dealerStrategy(deck, hand, count=null) {
         hand.push(deck.draw(count));
         handVal = calcValues(hand);
     }
-    return handVal[0];
+    return [handVal[0], hand.length];
 }
 
-function evaluateReturn(pHandVal, dHandVal, pNumOfCards, doubled=false, split=false) {
+function evaluateReturn(pHandVal, dHandVal, pNumOfCards, dNumOfCards, doubled=false, split=false) {
     //console.log('Player hand value: ' + pHandVal);
     //console.log('Dealer hand value: ' + dHandVal);
     var multiplier = 1;
@@ -237,6 +237,10 @@ function evaluateReturn(pHandVal, dHandVal, pNumOfCards, doubled=false, split=fa
         return 1*multiplier;
     }
     if(pHandVal==dHandVal) {
+        if(pHandVal==21 && pNumOfCards==2 && !split && dNumOfCards>2) {
+            //console.log('Player Blackjack');
+            return 1.5*multiplier;
+        }
         //console.log('Push');
         return 0;
     }
@@ -541,7 +545,7 @@ function blackjackSimulation(deck, betAmount, count, countThreshold=-500) {
     //console.log('Dealer Hand Value: ' + dHandVal);
     var totalReturn = 0;
     for(let i=0; i<handVals.length; i++) {
-        var ret = evaluateReturn(handVals[i][0], dHandVal, handVals[i][1], handVals[i][2], handVals[i][3])*betAmount;
+        var ret = evaluateReturn(handVals[i][0], dHandVal[0], handVals[i][1], dHandVal[1], handVals[i][2], handVals[i][3])*betAmount;
         //console.log('return: ' + ret);
         totalReturn += ret;
     }
