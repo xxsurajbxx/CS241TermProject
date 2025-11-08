@@ -2,6 +2,7 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
+import statistics
 
 if len(sys.argv) !=2:
     print('please supply the path of the data file to visualize')
@@ -17,41 +18,7 @@ else:
         numberOfRounds = data['numberOfRounds']
         totalResults = data['totalResults']
 
-        print(f'Final Results: {totalResults}')
-        print(f'House Edge: {-1*(totalResults/numberOfRounds)}')
-        wPercent = (resultsDictionary['wins']/numberOfRounds)*100
-        lPercent = (resultsDictionary['losses']/numberOfRounds)*100
-        dPercent = (resultsDictionary['draws']/numberOfRounds)*100
-        print(f'win percentage: {wPercent: .2f}')
-        print(f'loss percentage: {lPercent: .2f}')
-        print(f'draw percentage: {dPercent: .2f}')
-
-
-        #"resultsPerGame": resultsPerGame, still need to do something with this
-        """
-        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8), sharey=True)
-        ax1.plot(np.arange(len(results)), results)
-        ax1.set_xlabel('Time')
-        ax1.set_ylabel('Results')
-        ax1.set_title('Results vs Time')
-        ax2.scatter(overallRunningCount, results)
-        ax2.set_xlabel('Count')
-        ax2.set_ylabel('Results')
-        ax2.set_title('Results vs Count')
-        """
-
-        # Regression
-        #plt.figure(1)
-        #npOverallRunningCount = np.array(overallRunningCount)
-        #npResults = np.array(results)
-
-        #coefficients = np.polyfit(npOverallRunningCount, npResults, 10)
-        #r_squared = np.corrcoef(npOverallRunningCount, np.array(results))[0, 1]**2
-        #regression = np.poly1d(coefficients)
-        #plt.plot(range(min(npOverallRunningCount), max(npOverallRunningCount)+1), regression(range(min(npOverallRunningCount), max(npOverallRunningCount)+1)))
-        #print(f'r^2: {r_squared}')
-        #plt.scatter(overallRunningCount, npResults)
-
+        # Graphing returns from Monte Carlo Simulation
         avgReturnVsCount = {}
         plt.figure(2)
         groupings = 100000
@@ -77,7 +44,7 @@ else:
                 stdDevPerCount[overallRunningCount[i]] = results[i]**2
             
             if i%groupings==0 and len(yAxis)==groupings+1:
-                groupedResults.append(yAxis)
+                groupedResults.append(yAxis[:])
                 plt.plot(xAxis, yAxis, color='blue')
                 prevResult=totalRunningResults[i]
                 yAxis=[0]
@@ -85,9 +52,10 @@ else:
             avgLine[(i%groupings)+1] += totalRunningResults[i]-prevResult
             if i>=numberOfRounds-groupings:
                 avgLine[(i%groupings)+1]/=(numberOfRounds/groupings)
-        plt.plot(xAxis, avgLine, color='red') # this is supposed to visualize the average return per hand per grouping
+        plt.plot(xAxis, avgLine, color='red') # this visualizes the average return per hand per grouping
         plt.xlim(0, groupings)
         
+        #Linear Regression
         plt.figure(2)
         xAxis = np.array(list(avgReturnVsCount.keys()))
         yAxis = np.array(list(avgReturnVsCount.values()))
@@ -98,7 +66,7 @@ else:
         stdDevPerCount = stdDevPerCount[sortedIndexes]
         stdDevPerCount = np.sqrt((stdDevPerCount/yAxis[:, 1])- ((yAxis[:, 0]/yAxis[:, 1])**2))
         standardErrorPerCount = stdDevPerCount / np.sqrt(yAxis[:, 1])
-        boolMask = yAxis[:, 1] >= 10000 # here i filter by the number of occurances of each count (to remove outliers)
+        boolMask = ((standardErrorPerCount[:] < 0.01) & (yAxis[:, 1] >= 1000)) # here i filter by the amount of std error and data per count
         xAxis = xAxis[boolMask]
         yAxis = yAxis[boolMask]
         stdDevPerCount = stdDevPerCount[boolMask]
@@ -113,6 +81,23 @@ else:
         #plt.ylim(-0.25, 0.25)
         plt.plot(np.linspace(min(xAxis), max(xAxis), 2), [0, 0])
         print(f'r^2: {r_squared}')
-        
-    #plt.yscale('log')
+
+        #Box and Whisker Plot
+        plt.figure(3)
+        returnPerGroup = [g[-1] for g in groupedResults]
+        plt.boxplot(returnPerGroup)
+
+        # Basic Statistics
+        percentageReturns=totalResults/numberOfRounds
+        print(f'Final Results: {totalResults}')
+        print(f'House Edge: {-1*percentageReturns}')
+        wPercent = (resultsDictionary['wins']/numberOfRounds)*100
+        lPercent = (resultsDictionary['losses']/numberOfRounds)*100
+        dPercent = (resultsDictionary['draws']/numberOfRounds)*100
+        print(f'win percentage: {wPercent: .2f}')
+        print(f'loss percentage: {lPercent: .2f}')
+        print(f'draw percentage: {dPercent: .2f}')
+        print(f'Slope of our regression line (expected increase in avg return per increase in count): {regressionCoefficients[0]}')
+        print(f'lowest our bankroll went: {min([min(g) for g in groupedResults])}')
+        print(f'Sharpe Ratio: {percentageReturns/statistics.stdev(results)}')
     plt.show()
