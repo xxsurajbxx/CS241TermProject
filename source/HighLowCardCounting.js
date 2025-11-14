@@ -54,7 +54,6 @@ console.log(blackjackSimulation(d, bet));
 
 let totalResults = 0;
 let totalRunningResults = [];
-let totalRunningResultsPerGame = [];
 let results = [];
 let resultsPerGame = [];
 let resultsDictionary = {"wins":0, "losses":0, "draws":0};
@@ -65,8 +64,7 @@ var runningCount = new header.counter();
 while(numberOfRounds<rounds) {
     let d = new header.Deck(8);
     d.shuffle();
-    // const shoe = Math.floor(Math.random()*27)+45;
-    const shoe = 52; //keeping a constant shoe for now. can vary the shoe later
+    const shoe = Math.floor(Math.random()*27)+45;
     runningCount.value = 0;
     var gameResult = [];
     var gameRunningResult = 0;
@@ -89,7 +87,6 @@ while(numberOfRounds<rounds) {
         if(numberOfRounds==rounds) {break;}
     }
     resultsPerGame.push(gameResult);
-    totalRunningResultsPerGame.push(gameRunningResults);
 }
 
 const finalData = {
@@ -98,7 +95,6 @@ const finalData = {
     "resultsDictionary": resultsDictionary,
     "totalRunningResults": totalRunningResults,
     "results": results,
-    "totalRunningResultsPerGame": totalRunningResultsPerGame,
     "resultsPerGame": resultsPerGame,
     "overallRunningCount": overallRunningCount
 };

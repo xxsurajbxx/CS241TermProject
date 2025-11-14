@@ -32,7 +32,6 @@ console.log(blackjackSimulation(d, bet));
 
 let totalResults = 0;
 let totalRunningResults = [];
-let totalRunningResultsPerGame = [];
 let results = [];
 let resultsPerGame = [];
 let resultsDictionary = {"wins":0, "losses":0, "draws":0};
@@ -65,7 +64,6 @@ while(numberOfRounds<rounds) {
         if(numberOfRounds==rounds) {break;}
     }
     resultsPerGame.push(gameResult);
-    totalRunningResultsPerGame.push(gameRunningResults);
 }
 
 const finalData = {
@@ -74,7 +72,6 @@ const finalData = {
     "resultsDictionary": resultsDictionary,
     "totalRunningResults": totalRunningResults,
     "results": results,
-    "totalRunningResultsPerGame": totalRunningResultsPerGame,
     "resultsPerGame": resultsPerGame,
     "overallRunningCount": overallRunningCount
 };
