@@ -67,7 +67,7 @@ else:
             stdDevPerCount = stdDevPerCount[sortedIndexes]
             stdDevPerCount = np.sqrt((stdDevPerCount/yAxis[:, 1])- ((yAxis[:, 0]/yAxis[:, 1])**2))
             standardErrorPerCount = stdDevPerCount / np.sqrt(yAxis[:, 1])
-            boolMask = ((standardErrorPerCount[:] < 0.01) & (yAxis[:, 1] >= 1000)) # here i filter by the amount of std error and data per count
+            boolMask = ((standardErrorPerCount[:] < 0.05) & (yAxis[:, 1] >= 1000)) # here i filter by the amount of std error and data per count
             xAxis = xAxis[boolMask]
             yAxis = yAxis[boolMask]
             stdDevPerCount = stdDevPerCount[boolMask]
@@ -93,7 +93,7 @@ else:
         chartStatistics = f'Final Results: {totalResults}\nEdge: {-1*percentageReturns: .2f}%\nWin Percentage: {wPercent: .2f}\nLoss Percentage: {lPercent: .2f}\nDraw Percentage: {dPercent: .2f}\nr^2: {r_squared: .4f}\nSlope: {regressionCoefficients[0]: .4f}\nBankroll Minimum(per {groupings} hands): {min([min(g) for g in groupedResults])}\nSharpe Ratio: {percentageReturns/statistics.stdev(results): .4f}\n'
         table_data = [
             ["Final Results:", f"{totalResults}"],
-            ["Edge:", f"{-1*percentageReturns:.2f}%"],
+            ["House Edge:", f"{-1*percentageReturns:.2f}%"],
             ["Win Percentage:", f"{wPercent:.2f}"],
             ["Loss Percentage:", f"{lPercent:.2f}"],
             ["Draw Percentage:", f"{dPercent:.2f}"],

@@ -6,7 +6,7 @@ const rounds = 1000000;
 const bet = 1;
 seedrandom('abc', { global: true });
 // we only play when the true count is at or above this threshold otherwise we let the dealer simulate hands by himself
-const trueCountThreshold=1;
+const trueCountThreshold=2;
 
 
 //this code tests this strategy
@@ -70,11 +70,11 @@ while(numberOfRounds<rounds) {
     var gameRunningResult = 0;
     var gameRunningResults = [];
     while(d.cards.length>shoe) {
-        const count = runningCount.value;
+        const count = runningCount.value/(d.numCards/52)
         const result = header.blackjackSimulation(d, bet, runningCount, trueCountThreshold);
         if(result==null) {continue;}
         results.push(result);
-        overallRunningCount.push(Math.floor(count/(d.numCards/52)));
+        overallRunningCount.push(Math.floor(count));
         totalResults += result;
         totalRunningResults.push(totalResults);
         gameRunningResult += result;

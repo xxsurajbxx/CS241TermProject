@@ -3,47 +3,52 @@ const fs = require('fs');
 const header = require('./header.js')
 
 const rounds = 1000000;
-const bet = 1;
 seedrandom('abc', { global: true });
+// we only play when the true count is at or above this threshold otherwise we let the dealer simulate hands by himself
+const trueCountThreshold=2;
 
-function blackjackSimulation(deck, betAmount, count) {
-    var dealerHand = [];
-    var playerHand = [];
-    header.dealCards(dealerHand, playerHand, deck, count);
-    if(header.calcValues(dealerHand)[0]==21) {
-        //console.log("dealer hand: " + dealerHand); //testing code
-        //console.log("player hand: " + playerHand); //testing code
-        if(header.calcValues(playerHand)[0]==21) {return 0;}
-        return -1*betAmount;
-    }
-    //console.log("dealer hand: " + dealerHand); //testing code
-    //console.log("player hand: " + playerHand); //testing code
-    var pHandVal = header.dealerStrategy(deck, playerHand, count);
-    var dHandVal = header.dealerStrategy(deck, dealerHand, count);
-    //console.log("dealer hand: " + dealerHand); //testing code
-    //console.log("value: " + dHandVal);
-    //console.log("player hand: " + playerHand); //testing code
-    //console.log("value: " + pHandVal);
-    return header.evaluateReturn(pHandVal, dHandVal)*betAmount;
+
+//this code tests this strategy
+/*
+let d = new Deck(8);
+d.shuffle();
+
+for(i=0; i<10; i++) {
+    console.log('running count: ' + runningCount.value);
+    console.log('true count: ' + runningCount.value/(d.numCards/52.0) + '\n\n\n');
 }
+*/
+/*
+
+Counting Strategy:
+
+10, jack, queen, king, and ace are -1
+
+2, 3, 4, 5, and 6 are +1
+
+7, 8, 9 are 0
+
+
+a positive count is better for the player
+
+count per deck or true count is (running count) / (#of decks left)
+
+test the running count right now to ensure that it is working properly
+(also move the shared code over to the other programs and ensure that it still works) (GIVE IT A ONCE OVER BEFORE COPYING IT TO THE OTHER FILES)
+
+
+*/
+
+
+//run this multiple times with different seeds to be able to compare results on a larger scale
+
 
 /*
-//this code tests this strategy
+//this code tests this code
 
 let d = new Deck(8);
 d.shuffle();
 console.log(blackjackSimulation(d, bet));
-*/
-/*
-
-Dealer Strategy:
-
-Dealer hits on anything under 17
-Dealer stands on anything 17 and up
-In this implementation, dealer stands on soft 17 (Ace + 6)
-Dealer cannot split
-Dealer cannot double
-
 */
 
 let totalResults = 0;
@@ -65,7 +70,12 @@ while(numberOfRounds<rounds) {
     var gameRunningResults = [];
     while(d.cards.length>shoe) {
         const count = runningCount.value/(d.numCards/52);
-        const result = blackjackSimulation(d, bet, runningCount);
+        let bet=1;
+        if(count>8) {bet=8;}
+        else if(count>4) {bet=4;}
+        else if(count>2) {bet=2;}
+        const result = header.blackjackSimulation(d, bet, runningCount, trueCountThreshold);
+        if(result==null) {continue;}
         results.push(result);
         overallRunningCount.push(Math.floor(count));
         totalResults += result;
@@ -92,11 +102,6 @@ const finalData = {
     "overallRunningCount": overallRunningCount
 };
 const jsonData = JSON.stringify(finalData, null, 2);
-fs.writeFile('DealerStrategyData.json', jsonData, (err) => {
+fs.writeFile('BetSpreadsData.json', jsonData, (err) => {
   if (err) throw err;
 });
-//graph the wins/losses/draws over time
-//note the avg percentage of wins/losses/draws
-//note the standard deviation of wins/losses/draws between games
-//graph the wins/losses/draws over number of high/low cards
-//graph the wins/losses/draws over running/true count
