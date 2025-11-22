@@ -6,30 +6,6 @@ const rounds = 1000000;
 const bet = 1;
 seedrandom('abc', { global: true });
 
-/*
-
-Dealer Strategy:
-
-Dealer hits on anything under 17
-Dealer stands on anything 17 and up
-In this implementation, dealer stands on soft 17 (Ace + 6)
-Dealer cannot split
-Dealer cannot double
-
-*/
-
-
-//run this multiple times with different seeds to be able to compare results on a larger scale
-
-
-/*
-//this code tests this code
-
-let d = new Deck(8);
-d.shuffle();
-console.log(blackjackSimulation(d, bet));
-*/
-
 let totalResults = 0;
 let totalRunningResults = [];
 let results = [];
@@ -79,8 +55,3 @@ const jsonData = JSON.stringify(finalData, null, 2);
 fs.writeFile('BasicStrategyData.json', jsonData, (err) => {
   if (err) throw err;
 });
-//graph the wins/losses/draws over time
-//note the avg percentage of wins/losses/draws
-//note the standard deviation of wins/losses/draws between games
-//graph the wins/losses/draws over number of high/low cards
-//graph the wins/losses/draws over running/true count

@@ -7,50 +7,6 @@ seedrandom('abc', { global: true });
 // we only play when the true count is at or above this threshold otherwise we let the dealer simulate hands by himself
 const trueCountThreshold=2;
 
-
-//this code tests this strategy
-/*
-let d = new Deck(8);
-d.shuffle();
-
-for(i=0; i<10; i++) {
-    console.log('running count: ' + runningCount.value);
-    console.log('true count: ' + runningCount.value/(d.numCards/52.0) + '\n\n\n');
-}
-*/
-/*
-
-Counting Strategy:
-
-10, jack, queen, king, and ace are -1
-
-2, 3, 4, 5, and 6 are +1
-
-7, 8, 9 are 0
-
-
-a positive count is better for the player
-
-count per deck or true count is (running count) / (#of decks left)
-
-test the running count right now to ensure that it is working properly
-(also move the shared code over to the other programs and ensure that it still works) (GIVE IT A ONCE OVER BEFORE COPYING IT TO THE OTHER FILES)
-
-
-*/
-
-
-//run this multiple times with different seeds to be able to compare results on a larger scale
-
-
-/*
-//this code tests this code
-
-let d = new Deck(8);
-d.shuffle();
-console.log(blackjackSimulation(d, bet));
-*/
-
 let totalResults = 0;
 let totalRunningResults = [];
 let results = [];
