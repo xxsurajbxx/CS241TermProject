@@ -1,6 +1,6 @@
 const seedrandom = require('seedrandom');
 const fs = require('fs');
-const header = require('./header.js')
+const header = require('./header.js');
 
 const rounds = 1000000;
 seedrandom('abc', { global: true });
@@ -15,9 +15,9 @@ let resultsDictionary = {"wins":0, "losses":0, "draws":0};
 let numberOfRounds = 0;
 let overallRunningCount = [];
 var runningCount = new header.counter();
+let d = new header.Deck(8);
 
 while(numberOfRounds<rounds) {
-    let d = new header.Deck(8);
     d.shuffle();
     const shoe = Math.floor(Math.random()*27)+45;
     runningCount.value = 0;
@@ -46,6 +46,7 @@ while(numberOfRounds<rounds) {
         if(numberOfRounds==rounds) {break;}
     }
     resultsPerGame.push(gameResult);
+    d.resetDeck();
 }
 
 const finalData = {

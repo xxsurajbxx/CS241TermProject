@@ -97,7 +97,7 @@ class Deck {
     }
     draw(count=null) {
         this.numCards-=1;
-        var rm = this.cards.pop();
+        const rm = this.cards.pop();
         if(count!=null) {
             switch(rm.value) {
                 case '2':
@@ -165,6 +165,11 @@ class Deck {
         this.cards = []
         this.cards = this.cards.concat(l2);
         this.cards = this.cards.concat(l1);
+    }
+    resetDeck() {
+        this.numCards = this.numOfDecks*52;
+        this.cards = this.cards.concat(this.drawnCards);
+        this.drawnCards = [];
     }
 }
 

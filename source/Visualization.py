@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 import statistics
-import re
 
 if len(sys.argv) < 2:
     print('please supply the path of the data file to visualize')
