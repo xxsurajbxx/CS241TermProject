@@ -558,6 +558,10 @@ function blackjackSimulation(deck, betAmount, count, countThreshold=-500) {
     return totalReturn;
 }
 
+function betSpread(count) {
+    return 9.5/(1+19*Math.exp(-0.75*count));
+}
+
 module.exports = {
   Card,
   Deck,
@@ -569,5 +573,6 @@ module.exports = {
   runStrategy,
   basicStrategy,
   shouldSplit,
-  blackjackSimulation
+  blackjackSimulation,
+  betSpread
 };

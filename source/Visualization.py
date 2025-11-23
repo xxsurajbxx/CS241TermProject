@@ -91,7 +91,7 @@ else:
         dPercent = (resultsDictionary['draws']/numberOfRounds)*100
         chartStatistics = f'Final Results: {totalResults}\nEdge: {-1*percentageReturns: .2f}%\nWin Percentage: {wPercent: .2f}\nLoss Percentage: {lPercent: .2f}\nDraw Percentage: {dPercent: .2f}\nr^2: {r_squared: .4f}\nSlope: {regressionCoefficients[0]: .4f}\nBankroll Minimum(per {groupings} hands): {min([min(g) for g in groupedResults])}\nSharpe Ratio: {percentageReturns/statistics.stdev(results): .4f}\n'
         table_data = [
-            ["Final Results:", f"{totalResults}"],
+            ["Final Results:", f"{totalResults:.2f}"],
             ["House Edge:", f"{-1*percentageReturns:.2f}%"],
             ["Win Percentage:", f"{wPercent:.2f}"],
             ["Loss Percentage:", f"{lPercent:.2f}"],
