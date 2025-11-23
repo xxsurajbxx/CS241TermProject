@@ -574,5 +574,5 @@ module.exports = {
   basicStrategy,
   shouldSplit,
   blackjackSimulation,
-  betSpread
+  betSpread,
 };
