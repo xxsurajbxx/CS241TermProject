@@ -26,7 +26,7 @@ while(numberOfRounds<rounds) {
     var gameRunningResult = 0;
     var gameRunningResults = [];
     while(d.cards.length>shoe) {
-        const count = runningCount.value/(d.numCards/52)
+        const count = runningCount.value/(d.numCards/52);
         const result = header.blackjackSimulation(d, bet, runningCount, trueCountThreshold);
         if(result==null) {continue;}
         results.push(result);
