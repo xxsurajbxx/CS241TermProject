@@ -74,7 +74,7 @@ function monteCarloOptiamalStrategySimulation(playersHand, dealerUpcard, deck, c
     move = null;
     if(val[0]!='21') {
         played=true;
-        if(table[val[1]][dealerUpcard][val[0]]['H'][1] < rounds) {action='H'; playersHand.push(deck.draw(count)); result = [header.runBasicStrategy(deck, playersHand, dealerUpcard, count).concat(split>0)];}
+        if(table[val[1]][dealerUpcard][val[0]]['H'][1] < rounds) {action='H'; playersHand.push(deck.draw(count)); result = [header.runStrategy(deck, playersHand, dealerUpcard, count, header.basicStrategy).concat(split>0)];}
         else if(table[val[1]][dealerUpcard][val[0]]['S'][1] < rounds) {action='S'; result = [[header.calcValues(playersHand)[0], playersHand.length, false, false]]}
         else if(table[val[1]][dealerUpcard][val[0]]['D'][1] < rounds) {action='D'; playersHand.push(deck.draw(count)); result = [[header.calcValues(playersHand)[0], playersHand.length, true, false]];}
         else {played=false;}

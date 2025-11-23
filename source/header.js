@@ -259,13 +259,13 @@ class counter {
     }
 }
 
-function runBasicStrategy(deck, hand, dealerCard, count) {
+function runStrategy(deck, hand, dealerCard, count, strategy) {
     var handVal = calcValues(hand);
     var decision=null;
     while(handVal[0]<21 && decision!='s') {
         //console.log(hand);
         //console.log('value: ' + handVal[0] + ' stiffness: ' + handVal[1]);
-        decision = basicStrategy(dealerCard, handVal[0], handVal[1]);
+        decision = strategy(dealerCard, handVal[0], handVal[1]);
         //console.log('decision: ' + decision);
         switch(decision) {
             case 'h':
@@ -511,7 +511,7 @@ function playOutHand(playersHand, dealerUpcard, deck, count, split=0) {
             handVal = calcValues(playersHand);
             return [[handVal[0], playersHand.length, false, true]];
         }
-        return [runBasicStrategy(deck, playersHand, dealerUpcard, count).concat(split>0)];
+        return [runStrategy(deck, playersHand, dealerUpcard, count, basicStrategy).concat(split>0)];
     }
 }
 
@@ -566,7 +566,7 @@ module.exports = {
   dealerStrategy,
   evaluateReturn,
   counter,
-  runBasicStrategy,
+  runStrategy,
   basicStrategy,
   shouldSplit,
   blackjackSimulation
