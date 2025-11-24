@@ -30,7 +30,6 @@ function blackjackSimulation(deck, betAmount, count) {
 let totalResults = 0;
 let totalRunningResults = [];
 let results = [];
-let resultsPerGame = [];
 let resultsDictionary = {"wins":0, "losses":0, "draws":0};
 let numberOfRounds = 0;
 let overallRunningCount = [];
@@ -60,7 +59,6 @@ while(numberOfRounds<rounds) {
         gameResult.push(result);
         if(numberOfRounds==rounds) {break;}
     }
-    resultsPerGame.push(gameResult);
     d.resetDeck();
 }
 
@@ -70,7 +68,6 @@ const finalData = {
     "resultsDictionary": resultsDictionary,
     "totalRunningResults": totalRunningResults,
     "results": results,
-    "resultsPerGame": resultsPerGame,
     "overallRunningCount": overallRunningCount
 };
 const jsonData = JSON.stringify(finalData, null, 2);
